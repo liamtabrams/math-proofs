@@ -1,78 +1,401 @@
-\documentclass{amsart}
-\usepackage{amsmath, amssymb, amsthm}
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm, xcolor, mdframed, array}
+\usepackage{geometry}
+\usepackage{titlesec}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{enumitem}
 
+\geometry{margin=1.3in, top=1.2in, bottom=1.4in}
+
+%% ---------------------------------------------------------------
+%%  Colors
+%% ---------------------------------------------------------------
+\definecolor{exampleblue}{RGB}{30, 90, 180}
+\definecolor{examplebg}{RGB}{235, 243, 255}
+\definecolor{motivationgreen}{RGB}{20, 110, 60}
+\definecolor{motivationbg}{RGB}{235, 248, 240}
+\definecolor{headergray}{RGB}{60, 60, 60}
+\definecolor{stepcolor}{RGB}{120, 0, 0}
+
+%% ---------------------------------------------------------------
+%%  Section / heading styles
+%% ---------------------------------------------------------------
+\titleformat{\section}
+  {\large\bfseries\color{headergray}}
+  {}{}{}[\vspace{2pt}\titlerule\vspace{4pt}]
+
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{stepcolor}}
+  {}{}{}
+
+\titlespacing{\section}{0pt}{24pt}{10pt}
+\titlespacing{\subsection}{0pt}{18pt}{6pt}
+
+%% ---------------------------------------------------------------
+%%  Theorem style
+%% ---------------------------------------------------------------
+\newtheoremstyle{mythmstyle}
+  {14pt}{14pt}
+  {\itshape}{}
+  {\bfseries}{.}
+  { }{}
+\theoremstyle{mythmstyle}
 \newtheorem{theorem}{Theorem}
 
-\title{Two-sided ideals of $\mathcal{L}(V)$}
-\date{}
+%% ---------------------------------------------------------------
+%%  Colored environments
+%% ---------------------------------------------------------------
+\newenvironment{example}{%
+  \vspace{8pt}
+  \begin{mdframed}[backgroundcolor=examplebg, linecolor=exampleblue,
+    linewidth=1.4pt, innerleftmargin=14pt, innerrightmargin=14pt,
+    innertopmargin=12pt, innerbottommargin=12pt,
+    skipabove=12pt, skipbelow=12pt]
+  \noindent\textcolor{exampleblue}{\textbf{\small CONCRETE EXAMPLE} \normalsize($V = \mathbb{R}^2$).}\par\vspace{6pt}
+}{%
+  \end{mdframed}
+  \vspace{6pt}
+}
+
+\newenvironment{motivation}{%
+  \vspace{6pt}
+  \begin{mdframed}[backgroundcolor=motivationbg, linecolor=motivationgreen,
+    linewidth=1.4pt, innerleftmargin=14pt, innerrightmargin=14pt,
+    innertopmargin=12pt, innerbottommargin=12pt,
+    skipabove=12pt, skipbelow=12pt]
+  \noindent\textcolor{motivationgreen}{\textbf{\small MOTIVATION \& SCOPE}}\par\vspace{6pt}
+}{%
+  \end{mdframed}
+  \vspace{6pt}
+}
+
+%% ---------------------------------------------------------------
+%%  Paragraph spacing
+%% ---------------------------------------------------------------
+\setlength{\parskip}{9pt}
+\setlength{\parindent}{0pt}
 
 \begin{document}
-\maketitle
+
+%% ---------------------------------------------------------------
+%%  Title block
+%% ---------------------------------------------------------------
+\begin{center}
+  {\LARGE\bfseries\color{headergray} Two-Sided Ideals of $\mathcal{L}(V)$}
+
+  \vspace{14pt}
+
+  {\large Liam Abrams}
+
+  \vspace{4pt}
+
+  {\normalsize \today}
+
+  \vspace{10pt}
+
+  {\normalsize\itshape
+    \textit{Linear Algebra Done Right, 4th Ed.}, Sheldon Axler\\[2pt]
+    Chapter 3 \ $\cdot$ \ Problem 17}
+\end{center}
+
+\vspace{20pt}
+\hrule height 0.8pt
+\vspace{20pt}
+
+%% ---------------------------------------------------------------
+%%  Motivation
+%% ---------------------------------------------------------------
+\begin{motivation}
+The goal of this writeup is to prove that the only two-sided ideals of
+$\mathcal{L}(V)$ are $\{0\}$ and $\mathcal{L}(V)$, using \emph{only} the
+theory developed through Chapter~3 of Axler --- that is, the basic properties
+of vector spaces, subspaces, bases, and linear maps. We deliberately avoid
+ring theory and any machinery from later in the book. The key tools are:
+\begin{itemize}[leftmargin=1.4em, itemsep=3pt]
+  \item A linear map is freely and uniquely determined by its values on a basis.
+  \item A subspace is closed under addition.
+\end{itemize}
+\end{motivation}
+
+%% ---------------------------------------------------------------
+%%  Key definition
+%% ---------------------------------------------------------------
+\section{Key Definition}
+
+A subspace $\mathcal{E} \subseteq \mathcal{L}(V)$ is called a
+\emph{two-sided ideal} if for every $E \in \mathcal{E}$ and every
+$T \in \mathcal{L}(V)$,
+\[
+    TE \in \mathcal{E} \qquad \text{and} \qquad ET \in \mathcal{E}.
+\]
+
+\vspace{4pt}
+
+In words: you can multiply any element of $\mathcal{E}$ on the \emph{left or
+right} by any operator in $\mathcal{L}(V)$, and the result always stays
+inside $\mathcal{E}$.
+
+%% ---------------------------------------------------------------
+%%  Theorem
+%% ---------------------------------------------------------------
+\section{Main Theorem}
 
 \begin{theorem}
-Suppose $V$ is finite-dimensional. The only two-sided ideals of $\mathcal{L}(V)$ are $\{0\}$ and $\mathcal{L}(V)$.
+Suppose $V$ is finite-dimensional. The only two-sided ideals of
+$\mathcal{L}(V)$ are $\{0\}$ and $\mathcal{L}(V)$.
 \end{theorem}
 
-\begin{proof}
-Let $\mathcal{E}$ be a two-sided ideal of $\mathcal{L}(V)$. If $\mathcal{E} = \{0\}$ we are done,
-so assume $\mathcal{E}$ is nonzero. We show $\mathcal{E} = \mathcal{L}(V)$.
+%% ---------------------------------------------------------------
+%%  Proof
+%% ---------------------------------------------------------------
+\section{Proof}
 
-\medskip
-\noindent\textbf{Step 1: Setup.}
-Since $\mathcal{E} \neq \{0\}$, there exists a nonzero $E \in \mathcal{E}$.
-Since $E$ is not the zero map, there exists $u \in V$ with $Eu \neq 0$.
-Extend $u$ to a basis $u, f_2, \ldots, f_n$ of $V$, and extend $Eu$ to a basis
-$Eu, g_2, \ldots, g_n$ of $V$.
+Let $\mathcal{E}$ be a two-sided ideal of $\mathcal{L}(V)$. It is trivial to show that ${0}$ is a two-sided ideal, so assume $\mathcal{E}$ is nonzero.
+We will show $\mathcal{E} = \mathcal{L}(V)$ by showing that \emph{every}
+operator in $\mathcal{L}(V)$ must lie in $\mathcal{E}$.
 
-\medskip
-\noindent\textbf{Step 2: Using the ideal to build controlled operators.}
-Let $v_1, \ldots, v_n$ be a basis of $V$ and let $F \in \mathcal{L}(V)$ be arbitrary.
-For each $i = 1, \ldots, n$, we construct an operator $A_i \in \mathcal{E}$ satisfying
+%% --- Step 1 ---
+\subsection{Step 1 \quad Find a vector that $E$ does not kill}
+
+Since $\mathcal{E} \neq \{0\}$, there exists a nonzero operator
+$E \in \mathcal{E}$. Since $E$ is not the zero map, there must exist some
+vector $u \in V$ such that $Eu \neq 0$. This is the one foothold we have
+inside $\mathcal{E}$: a single nonzero operator $E$, and a single vector
+$u$ that $E$ moves somewhere nontrivial.
+
+\vspace{6pt}
+
+Extend $u$ to a basis $\,u,\, f_2,\, \ldots,\, f_n\,$ of $V$.\\
+Extend $Eu$ to a basis $\,Eu,\, g_2,\, \ldots,\, g_n\,$ of $V$.
+
+\begin{example}
+Take $V = \mathbb{R}^2$ and suppose $\mathcal{E}$ contains the nonzero
+operator
 \[
-    A_i(v_j) = \begin{cases} Fv_i & \text{if } j = i, \\ 0 & \text{if } j \neq i. \end{cases}
+    E = \begin{pmatrix} 1 & 0 \\ 0 & 0 \end{pmatrix}.
 \]
-Define $R \in \mathcal{L}(V)$ by $R(v_i) = u$ and $R(v_j) = 0$ for $j \neq i$.
-Define $S \in \mathcal{L}(V)$ by $S(Eu) = Fv_i$ and $S(g_k) = 0$ for $k \geq 2$.
-Set $A_i = SER$.
 
-The two-sided ideal property gives $A_i \in \mathcal{E}$ in two steps:
+Try $u = e_1 = \begin{pmatrix}1\\0\end{pmatrix}$. Then
+$Eu = \begin{pmatrix}1\\0\end{pmatrix} \neq 0$. \checkmark
+
+\vspace{6pt}
+
+The basis built around $u$ is the standard basis:
+\[
+  u = e_1 = \begin{pmatrix}1\\0\end{pmatrix}, \qquad
+  f_2 = e_2 = \begin{pmatrix}0\\1\end{pmatrix}.
+\]
+Since $Eu = e_1$, the basis built around $Eu$ is also $\,Eu = e_1,\;
+g_2 = e_2$.
+\end{example}
+
+%% --- Step 2 ---
+\subsection{Step 2 \quad Build a ``controlled'' operator using the ideal}
+
+The goal of this step is to show that for \emph{any} basis vector $v_i$
+and any target vector $w$, there exists an operator in $\mathcal{E}$ that
+sends $v_i \mapsto w$ and kills all other basis vectors. We do this by
+sandwiching $E$ between two hand-crafted operators.
+
+\vspace{6pt}
+
+Let $v_1, \ldots, v_n$ be any basis of $V$, let $F \in \mathcal{L}(V)$
+be any operator, and fix an index $i$. We want to produce an operator
+$A_i \in \mathcal{E}$ satisfying
+\[
+    A_i(v_i) = Fv_i \qquad \text{and} \qquad A_i(v_j) = 0
+    \;\text{ for all }\; j \neq i.
+\]
+
+\vspace{4pt}
+
+Construct two operators $R$ and $S$ as follows.
+
+\vspace{10pt}
+
+\noindent\textbf{Define $R$ \ (the ``router in''):}
+\[
+    R(v_i) = u, \qquad R(v_j) = 0 \;\text{ for all }\; j \neq i.
+\]
+$R$ is defined freely on the basis $v_1, \ldots, v_n$, so it is a valid
+linear map. Its job is to funnel the chosen input $v_i$ into $u$ --- the
+one vector we know $E$ handles nontrivially.
+
+\vspace{10pt}
+
+\noindent\textbf{Define $S$ \ (the ``router out''):}
+\[
+    S(Eu) = Fv_i, \qquad S(g_k) = 0 \;\text{ for all }\; k \geq 2.
+\]
+$S$ is defined freely on the basis $Eu, g_2, \ldots, g_n$, so it is a
+valid linear map. Its job is to send $Eu$ (the output of $E$) to whatever
+target we want, namely $Fv_i$.
+
+\vspace{12pt}
+
+\noindent Now set $A_i = SER$ and verify that $A_i \in \mathcal{E}$
+using the ideal property twice:
 \begin{align*}
-    E \in \mathcal{E} &\implies ER \in \mathcal{E} \quad \text{(closed under right-multiplication by } R\text{)}, \\
-    ER \in \mathcal{E} &\implies S(ER) \in \mathcal{E} \quad \text{(closed under left-multiplication by } S\text{)}.
+    E \in \mathcal{E}
+    &\implies ER \in \mathcal{E}
+    &&\text{($\mathcal{E}$ closed under right-multiplication by $R$)},\\[6pt]
+    ER \in \mathcal{E}
+    &\implies S(ER) = A_i \in \mathcal{E}
+    &&\text{($\mathcal{E}$ closed under left-multiplication by $S$)}.
 \end{align*}
-We verify that $A_i = SER$ behaves as claimed on each basis vector $v_j$:
-\[
-    A_i(v_i) = S(E(R(v_i))) = S(E(u)) = S(Eu) = Fv_i,
-\]
-\[
-    A_i(v_j) = S(E(R(v_j))) = S(E(0)) = 0 \quad \text{for all } j \neq i.
-\]
-The key idea is that $R$ routes the input $v_i$ to $u$ (the vector we know $E$
-acts on nontrivially), then $E$ maps $u$ to $Eu$, and finally $S$ routes $Eu$
-to any desired target $Fv_i$.
 
-\medskip
-\noindent\textbf{Step 3: Every operator in $\mathcal{L}(V)$ lies in $\mathcal{E}$.}
-Applying Step 2 for each $i = 1, \ldots, n$ yields operators $A_1, \ldots, A_n \in \mathcal{E}$.
-We claim $F = A_1 + \cdots + A_n$. Indeed, for each basis vector $v_i$,
+\vspace{4pt}
+
+Finally, trace each basis vector through the chain
+$\;v_j \xrightarrow{R} \cdot \xrightarrow{E} \cdot \xrightarrow{S} \cdot\;$
+to confirm $A_i$ behaves as claimed:
+\begin{align*}
+    A_i(v_i) &= S\!\left(E\!\left(R(v_i)\right)\right)
+               = S(E(u)) = S(Eu) = Fv_i, \\[6pt]
+    A_i(v_j) &= S\!\left(E\!\left(R(v_j)\right)\right)
+               = S(E(0)) = S(0) = 0
+               \qquad \text{for all } j \neq i.
+\end{align*}
+
+\begin{example}
+Let the target basis be the standard basis
+$v_1 = e_1,\; v_2 = e_2$, and let
+\[
+  F = \begin{pmatrix}3&7\\2&5\end{pmatrix}
+\]
+be any operator we wish to recover.
+
+\vspace{10pt}
+
+\noindent\textbf{Building $A_1$} \quad (handles $v_1 = e_1$;
+target $Fe_1 = \begin{pmatrix}3\\2\end{pmatrix}$, kills $e_2$)
+
+\vspace{6pt}
+
+\noindent\emph{Define $R_1$:} \quad
+$R_1(e_1) = u = e_1,\quad R_1(e_2) = 0.$ \quad
+As a matrix: $R_1 = \begin{pmatrix}1&0\\0&0\end{pmatrix}$.
+
+\vspace{4pt}
+
+\noindent\emph{Define $S_1$:} \quad
+$S_1(Eu) = S_1(e_1) = \begin{pmatrix}3\\2\end{pmatrix},\quad S_1(e_2) = 0.$ \quad
+As a matrix: $S_1 = \begin{pmatrix}3&0\\2&0\end{pmatrix}$.
+
+\vspace{4pt}
+
+\noindent\emph{Compute $A_1 = S_1 E R_1$:}
+\[
+    A_1 =
+    \begin{pmatrix}3&0\\2&0\end{pmatrix}
+    \begin{pmatrix}1&0\\0&0\end{pmatrix}
+    \begin{pmatrix}1&0\\0&0\end{pmatrix}
+    =
+    \begin{pmatrix}3&0\\2&0\end{pmatrix}.
+\]
+\noindent Check: \;
+$A_1(e_1) = \begin{pmatrix}3\\2\end{pmatrix} = Fe_1$ \checkmark \qquad
+$A_1(e_2) = \begin{pmatrix}0\\0\end{pmatrix}$ \checkmark
+
+\vspace{14pt}
+
+\noindent\textbf{Building $A_2$} \quad (handles $v_2 = e_2$;
+target $Fe_2 = \begin{pmatrix}7\\5\end{pmatrix}$, kills $e_1$)
+
+\vspace{6pt}
+
+\noindent\emph{Define $R_2$:} \quad
+$R_2(e_1) = 0,\quad R_2(e_2) = u = e_1.$ \quad
+As a matrix: $R_2 = \begin{pmatrix}0&1\\0&0\end{pmatrix}$.
+
+\vspace{4pt}
+
+\noindent\emph{Define $S_2$:} \quad
+$S_2(Eu) = S_2(e_1) = \begin{pmatrix}7\\5\end{pmatrix},\quad S_2(e_2) = 0.$ \quad
+As a matrix: $S_2 = \begin{pmatrix}7&0\\5&0\end{pmatrix}$.
+
+\vspace{4pt}
+
+\noindent\emph{Compute $A_2 = S_2 E R_2$:}
+\[
+    A_2 =
+    \begin{pmatrix}7&0\\5&0\end{pmatrix}
+    \begin{pmatrix}1&0\\0&0\end{pmatrix}
+    \begin{pmatrix}0&1\\0&0\end{pmatrix}
+    =
+    \begin{pmatrix}0&7\\0&5\end{pmatrix}.
+\]
+\noindent Check: \;
+$A_2(e_1) = \begin{pmatrix}0\\0\end{pmatrix}$ \checkmark \qquad
+$A_2(e_2) = \begin{pmatrix}7\\5\end{pmatrix} = Fe_2$ \checkmark
+\end{example}
+
+%% --- Step 3 ---
+\subsection{Step 3 \quad Reconstruct any operator $F$ as a sum of the $A_i$}
+
+Applying Step~2 for each index $i = 1, \ldots, n$ produces operators
+$A_1, \ldots, A_n \in \mathcal{E}$, each handling exactly one basis vector
+and killing the rest. We claim these pieces add up to $F$ exactly.
+
+\vspace{6pt}
+
+Evaluate $A_1 + \cdots + A_n$ on an arbitrary basis vector $v_i$:
 \[
     (A_1 + \cdots + A_n)(v_i)
-    = \sum_{k=1}^{n} A_k(v_i)
-    = A_i(v_i)
-    = Fv_i,
+    \;=\;
+    \underbrace{A_1(v_i)}_{=\,0}
+    + \cdots +
+    \underbrace{A_{i-1}(v_i)}_{=\,0}
+    +
+    \underbrace{A_i(v_i)}_{=\,Fv_i}
+    +
+    \underbrace{A_{i+1}(v_i)}_{=\,0}
+    + \cdots +
+    \underbrace{A_n(v_i)}_{=\,0}
+    \;=\; Fv_i.
 \]
-where every term $A_k(v_i)$ with $k \neq i$ vanishes by construction. Since $F$ and
-$A_1 + \cdots + A_n$ agree on every basis vector, they are equal as linear maps:
-\[
-    F = A_1 + \cdots + A_n.
-\]
-Since $\mathcal{E}$ is a subspace of $\mathcal{L}(V)$, it is closed under addition,
-and each $A_i \in \mathcal{E}$, so $F \in \mathcal{E}$.
 
-\medskip
-Since $F \in \mathcal{L}(V)$ was arbitrary, every operator lies in $\mathcal{E}$,
-so $\mathcal{L}(V) \subseteq \mathcal{E}$. Since also $\mathcal{E} \subseteq \mathcal{L}(V)$
-by assumption, we conclude $\mathcal{E} = \mathcal{L}(V)$.
-\end{proof}
+\vspace{4pt}
+
+Since $F$ and $A_1 + \cdots + A_n$ agree on every basis vector, they are
+the same linear map:
+\[
+    \boxed{F \;=\; A_1 \;+\; A_2 \;+\; \cdots \;+\; A_n.}
+\]
+
+Since $\mathcal{E}$ is a subspace, it is closed under addition. Each
+$A_i \in \mathcal{E}$, so their sum $F \in \mathcal{E}$.
+
+\begin{example}
+\[
+    A_1 + A_2
+    \;=\;
+    \begin{pmatrix}3&0\\2&0\end{pmatrix}
+    +
+    \begin{pmatrix}0&7\\0&5\end{pmatrix}
+    \;=\;
+    \begin{pmatrix}3&7\\2&5\end{pmatrix}
+    \;=\; F. \qquad \checkmark
+\]
+
+\vspace{4pt}
+
+So $F \in \mathcal{E}$, even though we only assumed the single matrix
+$E = \begin{pmatrix}1&0\\0&0\end{pmatrix}$ was in $\mathcal{E}$.
+\end{example}
+
+%% ---------------------------------------------------------------
+%%  Conclusion
+%% ---------------------------------------------------------------
+\section{Conclusion}
+
+Since $F \in \mathcal{L}(V)$ was completely arbitrary, every operator
+lies in $\mathcal{E}$, giving $\mathcal{L}(V) \subseteq \mathcal{E}$.
+Since $\mathcal{E}$ is by definition a subspace of $\mathcal{L}(V)$, we
+also have $\mathcal{E} \subseteq \mathcal{L}(V)$. Therefore
+\[
+    \mathcal{E} = \mathcal{L}(V). \qquad \blacksquare
+\]
 
 \end{document}
