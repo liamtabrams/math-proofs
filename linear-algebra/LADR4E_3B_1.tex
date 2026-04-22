@@ -1,0 +1,161 @@
+\documentclass[12pt]{article}
+ 
+% ── Packages ──────────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{hyperref}
+ 
+\geometry{margin=1in}
+ 
+% ── Theorem environments ───────────────────────────────────────────────────────
+\newtheorem*{problem}{Problem}
+\newtheorem*{claim}{Claim}
+\theoremstyle{definition}
+\newtheorem*{example}{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+ 
+% ── Custom commands ────────────────────────────────────────────────────────────
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\nullT}{\operatorname{null}}
+\newcommand{\range}{\operatorname{range}}
+\newcommand{\dime}{\operatorname{dim}}
+ 
+% ── Document ───────────────────────────────────────────────────────────────────
+\begin{document}
+ 
+\begin{center}
+  {\Large \textbf{Linear Algebra Done Right} (4th ed.) --- Sheldon Axler}\\[6pt]
+  {\large Exercises 3B, Problem 1}\\[4pt]
+  {\normalsize USF Master's Preparation}
+\end{center}
+ 
+\hrule
+\vspace{1em}
+ 
+% ── Problem statement ──────────────────────────────────────────────────────────
+\begin{problem}
+Give an example of a linear map $T$ with $\dime\,\nullT\,T = 3$ and
+$\dime\,\range\,T = 2$.
+\end{problem}
+ 
+\vspace{0.5em}
+ 
+% ── Background theorem ─────────────────────────────────────────────────────────
+\noindent\textbf{Key Tool: Fundamental Theorem of Linear Maps.}\;
+For any linear map $T : V \to W$ with $V$ finite-dimensional,
+\[
+  \dime\,V \;=\; \dime\,\nullT\,T \;+\; \dime\,\range\,T.
+\]
+Both examples below satisfy $3 + 2 = 5$, confirming that the domain must have
+dimension at least $5$.
+ 
+\vspace{1em}
+\hrule
+\vspace{1em}
+ 
+% ── Example 1 ─────────────────────────────────────────────────────────────────
+\begin{example}[Same domain and codomain]
+Define $T : \R^5 \to \R^5$ by
+\[
+  T(x_1, x_2, x_3, x_4, x_5) \;=\; (x_1,\, x_2,\, 0,\, 0,\, 0).
+\]
+\end{example}
+ 
+\begin{claim}
+$\dime\,\nullT\,T = 3$ and $\dime\,\range\,T = 2$.
+\end{claim}
+ 
+\begin{proof}
+\textbf{Null space.}
+A vector $(x_1,\ldots,x_5)\in\R^5$ lies in $\nullT\,T$ if and only if
+$T(x_1,\ldots,x_5) = \mathbf{0}$, i.e.\ $x_1 = x_2 = 0$ while $x_3,x_4,x_5$
+are free.  Hence
+\[
+  \nullT\,T
+  = \{(0,\,0,\,x_3,\,x_4,\,x_5) : x_3,x_4,x_5\in\R\}
+  = \operatorname{span}\!\bigl(\,e_3,\,e_4,\,e_5\bigr),
+\]
+so $\dime\,\nullT\,T = 3$.
+ 
+\textbf{Range.}
+Every output has the form $(x_1, x_2, 0, 0, 0)$, so
+\[
+  \range\,T
+  = \{(x_1,\,x_2,\,0,\,0,\,0) : x_1,x_2\in\R\}
+  = \operatorname{span}\!\bigl(\,e_1,\,e_2\bigr),
+\]
+giving $\dime\,\range\,T = 2$.
+Note that $\range\,T$ is a \emph{proper subspace} of the codomain $\R^5$.
+ 
+\textbf{Sanity check.}
+$\dime\,\R^5 = 5 = 3 + 2 = \dime\,\nullT\,T + \dime\,\range\,T$.\;\checkmark
+\end{proof}
+ 
+\vspace{1em}
+\hrule
+\vspace{1em}
+ 
+% ── Example 2 ─────────────────────────────────────────────────────────────────
+\begin{example}[Distinct domain and codomain]
+Define $T : \R^5 \to \R^2$ by
+\[
+  T(x_1, x_2, x_3, x_4, x_5) \;=\; (x_1,\, x_2).
+\]
+\end{example}
+ 
+\begin{claim}
+$\dime\,\nullT\,T = 3$ and $\dime\,\range\,T = 2$.
+\end{claim}
+ 
+\begin{proof}
+\textbf{Null space.}
+$T(x_1,\ldots,x_5) = \mathbf{0}\in\R^2$ if and only if $x_1 = x_2 = 0$, with
+$x_3,x_4,x_5$ free.  Thus $\nullT\,T = \operatorname{span}(e_3,e_4,e_5)$ and
+$\dime\,\nullT\,T = 3$.
+ 
+\textbf{Range.}
+For any $(y_1,y_2)\in\R^2$, we have $T(y_1,y_2,0,0,0)=(y_1,y_2)$, so $T$ is
+\emph{surjective} and $\range\,T = \R^2$, giving $\dime\,\range\,T = 2$.
+ 
+\textbf{Sanity check.}
+$\dime\,\R^5 = 5 = 3 + 2$.\;\checkmark
+\end{proof}
+ 
+\vspace{1em}
+\hrule
+\vspace{1em}
+ 
+% ── Comparison table ───────────────────────────────────────────────────────────
+\subsection*{Comparison of the Two Examples}
+ 
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{} l >{\centering\arraybackslash}m{3.8cm}
+                      >{\centering\arraybackslash}m{3.8cm} @{}}
+\toprule
+ & \textbf{Example 1} & \textbf{Example 2} \\
+\midrule
+Map & $T:\R^5\to\R^5$ & $T:\R^5\to\R^2$ \\
+Formula & $(x_1,x_2,x_3,x_4,x_5)\mapsto(x_1,x_2,0,0,0)$ & $(x_1,x_2,x_3,x_4,x_5)\mapsto(x_1,x_2)$ \\
+$\dime\,\nullT\,T$ & $3$ & $3$ \\
+$\dime\,\range\,T$ & $2$ & $2$ \\
+Is $T$ surjective? & No \;($\range\,T\subsetneq\R^5$) & \textbf{Yes} \;($\range\,T = \R^2$) \\
+Codomain $=$ Range? & No & \textbf{Yes} \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\begin{remark}
+The key distinction is that Example~1 maps into a \emph{larger} codomain
+$\R^5$, so the range is a proper $2$-dimensional subspace of $\R^5$ and $T$ is
+not surjective.  Example~2 maps into $\R^2$, which exactly equals the range,
+making $T$ surjective. Both are valid answers to the problem, but
+Example~2 is arguably more \emph{minimal}: the codomain is chosen to match the
+desired range dimension exactly, leaving no ``wasted'' space.
+\end{remark}
+ 
+\end{document}
