@@ -1,0 +1,89 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[margin=1in]{geometry}
+ 
+\newtheorem*{problem}{Problem}
+\newtheorem*{theorem}{Theorem}
+ 
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+ 
+\title{Main Idea: Composite Map Range Bounded by Minimum of Individual Ranges}
+\author{Liam Abrams}
+\date{April 25, 2026}
+ 
+\begin{document}
+\maketitle
+ 
+%------------------------------------------------------------------
+\section*{Chapter 3 -- Problem 23 of LADR4E by Axler}
+%------------------------------------------------------------------
+ 
+\begin{problem}
+Suppose $U$ and $V$ are finite-dimensional vector spaces and $S \in \mathcal{L}(V, W)$
+and $T \in \mathcal{L}(U, V)$. Prove that
+\[
+    \dim \operatorname{range} ST \leq
+    \min\{\dim \operatorname{range} S,\; \dim \operatorname{range} T\}.
+\]
+\end{problem}
+ 
+\begin{proof}
+We establish each inequality separately.
+ 
+\medskip
+\noindent\textbf{Claim 1: $\dim \operatorname{range} ST \leq \dim \operatorname{range} S$.}
+ 
+\medskip
+For any $u \in U$, we have $ST(u) = S(Tu)$, which is an element of
+$\operatorname{range} S$ by definition. Therefore every vector in
+$\operatorname{range} ST$ belongs to $\operatorname{range} S$, i.e.,
+\[
+    \operatorname{range} ST \subseteq \operatorname{range} S.
+\]
+Since a subspace cannot have larger dimension than any subspace that contains it:
+\[
+    \dim \operatorname{range} ST \leq \dim \operatorname{range} S.
+\]
+ 
+\medskip
+\noindent\textbf{Claim 2: $\dim \operatorname{range} ST \leq \dim \operatorname{range} T$.}
+ 
+\medskip
+The composition $ST$ first applies $T: U \to V$, then applies $S$. Every output
+of $ST$ is of the form $S(v)$ for some $v \in \operatorname{range} T$, so
+\[
+    \operatorname{range} ST = \{S(v) : v \in \operatorname{range} T\}.
+\]
+In other words, $\operatorname{range} ST$ is the image of $\operatorname{range} T$
+under $S$. Viewing the restriction $S|_{\operatorname{range} T}$ as a linear map
+from $\operatorname{range} T$ to $W$ and applying the Fundamental Theorem of
+Linear Maps:
+\[
+    \dim(\operatorname{range} T)
+    = \dim\bigl(\operatorname{null} S|_{\operatorname{range} T}\bigr)
+      + \dim\bigl(\operatorname{range} S|_{\operatorname{range} T}\bigr).
+\]
+Since $\operatorname{range} ST = \operatorname{range} S|_{\operatorname{range} T}$
+and dimensions are non-negative:
+\[
+    \dim \operatorname{range} ST
+    = \dim(\operatorname{range} T)
+      - \dim\bigl(\operatorname{null} S|_{\operatorname{range} T}\bigr)
+    \leq \dim \operatorname{range} T.
+\]
+ 
+\medskip
+\noindent\textbf{Conclusion.}
+
+\medskip
+Since $\dim \operatorname{range} ST \leq \dim \operatorname{range} S$ and
+$\dim \operatorname{range} ST \leq \dim \operatorname{range} T$, the quantity
+$\dim \operatorname{range} ST$ is a lower bound for both $\dim \operatorname{range} S$
+and $\dim \operatorname{range} T$, and therefore cannot exceed their minimum:
+\[
+    \dim \operatorname{range} ST
+    \leq \min\{\dim \operatorname{range} S,\; \dim \operatorname{range} T\}. \qedhere
+\]
+
+\end{document}

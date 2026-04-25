@@ -1,0 +1,53 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amsthm, amssymb}
+\usepackage[margin=1in]{geometry}
+ 
+\newtheorem*{problem}{Problem}
+\newtheorem*{theorem}{Theorem}
+ 
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+ 
+\title{Main Idea: Range Equals Null Odd Dimension Impossibility}
+\author{Liam Abrams}
+\date{April 25, 2026}
+ 
+\begin{document}
+\maketitle
+ 
+%------------------------------------------------------------------
+\section*{Chapter 3B -- Problem 6 of LADR4E by Axler}
+%------------------------------------------------------------------
+ 
+\begin{problem}
+Prove that there does not exist $T \in \mathcal{L}(\mathbf{R}^5)$ such that
+$\operatorname{range} T = \operatorname{null} T$.
+\end{problem}
+ 
+\begin{proof}
+Suppose for contradiction that such a $T$ exists. Since
+$\operatorname{range} T = \operatorname{null} T$, these two subspaces are equal, and in
+particular they have the same dimension:
+\[
+    \dim(\operatorname{null} T) = \dim(\operatorname{range} T).
+\]
+By the Fundamental Theorem of Linear Maps (rank-nullity theorem) applied to
+$T \in \mathcal{L}(\mathbf{R}^5)$:
+\[
+    \dim(\mathbf{R}^5) = \dim(\operatorname{null} T) + \dim(\operatorname{range} T).
+\]
+Substituting $\dim(\mathbf{R}^5) = 5$ and using the equality of dimensions above:
+\[
+    5 = \dim(\operatorname{null} T) + \dim(\operatorname{null} T) = 2\dim(\operatorname{null} T).
+\]
+This gives $\dim(\operatorname{null} T) = \tfrac{5}{2}$, which is impossible since
+dimension must be a non-negative integer. This contradiction shows no such $T$ exists.
+\end{proof}
+ 
+\begin{remark}
+The same argument shows that $\operatorname{range} T = \operatorname{null} T$ is
+impossible for any $T \in \mathcal{L}(V)$ whenever $\dim V$ is odd, since it would
+require $\dim V$ to be even.
+\end{remark}
+
+\end{document}
