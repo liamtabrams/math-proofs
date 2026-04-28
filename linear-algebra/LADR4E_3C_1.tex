@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{titling}
+ 
+% ── Title styling ──────────────────────────────────────────────────────────────
+\pretitle{\begin{center}\large\scshape}
+\posttitle{\par\end{center}}
+\preauthor{}\author{}\postauthor{}
+\predate{}\date{}\postdate{}
+ 
+% ── Theorem environments ───────────────────────────────────────────────────────
+\newtheoremstyle{problem}
+  {12pt}{12pt}{\normalfont}{0pt}{\bfseries}{.}{0.5em}{}
+\theoremstyle{problem}
+\newtheorem*{problem}{Problem}
+ 
+\newtheoremstyle{solution}
+  {12pt}{12pt}{\normalfont}{0pt}{\itshape}{.}{0.5em}{}
+\theoremstyle{solution}
+\newtheorem*{solution}{Solution}
+ 
+% ── Convenience macros ─────────────────────────────────────────────────────────
+\newcommand{\range}{\operatorname{range}}
+\newcommand{\F}{\mathbb{F}}
+ 
+\begin{document}
+ 
+\title{Linear Algebra Done Right, 4th Ed. by Sheldon Axler, Problem 1 from Chapter 3C}
+\maketitle
+\vspace{-1.5em}
+\begin{center}
+  \rule{0.45\textwidth}{0.4pt}
+\end{center}
+\vspace{0.5em}
+ 
+% ── Problem ────────────────────────────────────────────────────────────────────
+\begin{problem}
+Suppose $T \in \mathcal{L}(V, W)$. Show that with respect to each choice of
+bases of $V$ and $W$, the matrix of $T$ has at least $\dim \range\, T$ nonzero
+entries.
+\end{problem}
+ 
+\bigskip
+ 
+% ── Solution ───────────────────────────────────────────────────────────────────
+\begin{solution}
+Let $v_1, \ldots, v_n$ be a basis of $V$ and $w_1, \ldots, w_m$ be a basis
+of $W$, and let $M$ denote the matrix of $T$ with respect to these bases.
+By definition, the $j$-th column of $M$ consists of the scalars
+$A_{1,j}, \ldots, A_{m,j}$ such that
+\[
+    T(v_j) \;=\; A_{1,j}\,w_1 + \cdots + A_{m,j}\,w_m.
+\]
+The span of the columns of $M$ therefore corresponds exactly to the set of
+all linear combinations of $T(v_1), \ldots, T(v_n)$, which is $\range\, T$.
+Consequently, the number of linearly independent columns of $M$ equals
+\[
+    \dim \range\, T \;=:\; k.
+\]
+ 
+Hence $M$ has at least $k$ linearly independent columns.  Each such column
+must be nonzero, since the zero vector cannot belong to any linearly
+independent list.  A nonzero column contains at least one nonzero entry, and
+entries belong to exactly one column, so these $k$ columns contribute at
+least $k$ \emph{distinct} nonzero entries to $M$.
+ 
+Therefore the matrix of $T$ has at least $\dim \range\, T$ nonzero
+entries. \hfill$\blacksquare$
+\end{solution}
+ 
+\end{document}
+ 
