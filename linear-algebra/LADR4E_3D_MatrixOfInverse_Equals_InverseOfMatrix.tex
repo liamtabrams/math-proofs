@@ -1,0 +1,131 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{xcolor}
+ 
+\geometry{margin=1in}
+ 
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem*{remark}{Key Concept}
+\newtheorem*{note}{Note}
+ 
+% Custom command for matrix representation
+\newcommand{\M}[1]{\mathcal{M}\!\left(#1\right)}
+\newcommand{\Mb}[2]{\mathcal{M}\!\left(#1,\,(#2)\right)}
+ 
+\title{\textbf{Axler 3.86: Matrix of Inverse Equals Inverse of Matrix}\\
+\large A Proof and Conceptual Commentary}
+\author{Linear Algebra Done Right, 4th Edition}
+\date{}
+ 
+\begin{document}
+ 
+\maketitle
+ 
+\section*{Context in the Text}
+ 
+Theorem 3.86 is the \textbf{last result stated in Chapter 3D} of \emph{Linear Algebra Done Right}, 4th edition, appearing just before
+the end-of-chapter exercises. It is presented without proof, with Axler noting
+only that ``the proof of the next result is left as an exercise.''
+ 
+Chapter 3D culminates in the change-of-basis formula (3.84), which shows how
+the matrix of an operator transforms under a change of basis via
+$A = C^{-1}BC$. Theorem 3.86 is a natural coda to this: having established how
+matrices of operators compose and change with basis, the chapter closes by
+confirming that the matrix correspondence also respects inversion. It is
+intentionally elementary --- a short exercise designed to make the reader
+explicitly invoke the multiplicativity machinery developed in the chapter rather
+than taking the result for granted.
+ 
+\section*{Statement}
+ 
+\begin{theorem}[3.86 --- Matrix of inverse equals inverse of matrix]
+Suppose $v_1, \ldots, v_n$ is a basis of $V$ and $T \in \mathcal{L}(V)$ is
+invertible. Then
+\[
+    \M{T^{-1}} = \bigl(\M{T}\bigr)^{-1},
+\]
+where both matrices are with respect to the basis $v_1, \ldots, v_n$.
+\end{theorem}
+ 
+\section*{Prerequisites}
+ 
+This proof relies on one named result and one direct consequence of the definition:
+ 
+\begin{itemize}
+    \item \textbf{Multiplicativity of $\mathcal{M}$} (Axler 3.43): For operators
+          $S, T \in \mathcal{L}(V)$ with respect to the same basis,
+          \[
+              \M{ST} = \M{S}\,\M{T}.
+          \]
+ 
+    \item \textbf{Matrix of the identity} (from the definition of $\mathcal{M}$):
+          The $k$-th column of $\mathcal{M}(T)$ is determined by writing $Tv_k$
+          as a linear combination of $v_1, \ldots, v_n$. For the identity map,
+          $Iv_k = v_k$, so the $k$-th column has a $1$ in position $k$ and $0$s
+          elsewhere. Therefore $\mathcal{M}(I) = I$ (the $n \times n$ identity
+          matrix) follows directly from the definition, without a separate theorem.
+\end{itemize}
+ 
+\section*{Proof}
+ 
+Let $B = \M{T}$ and $B' = \M{T^{-1}}$, both with respect to $v_1, \ldots, v_n$.
+ 
+Since $T$ is invertible, we have $TT^{-1} = I$ as operators. Applying
+$\mathcal{M}$ to both sides and invoking multiplicativity:
+\[
+    BB' \;=\; \M{T}\,\M{T^{-1}} \;=\; \M{TT^{-1}} \;=\; \M{I} \;=\; I.
+\]
+By an identical argument using $T^{-1}T = I$:
+\[
+    B'B \;=\; \M{T^{-1}}\,\M{T} \;=\; \M{T^{-1}T} \;=\; \M{I} \;=\; I.
+\]
+Since $BB' = I$ and $B'B = I$, we conclude that $B' = B^{-1}$, i.e.,
+\[
+    \M{T^{-1}} = \bigl(\M{T}\bigr)^{-1}. \qed
+\]
+ 
+\section*{Key Concept: Why This Exercise Exists}
+ 
+\begin{remark}
+The result \emph{feels} obvious, and it is --- but only once you have
+identified the two bridges being crossed:
+ 
+\begin{enumerate}
+    \item \textbf{Operator composition $\longrightarrow$ matrix multiplication.}
+          The map $T \mapsto \mathcal{M}(T)$ converts operator composition into
+          matrix multiplication. This is non-trivial and was the whole motivation
+          behind defining matrix multiplication the way it is in Chapter 3.
+ 
+    \item \textbf{Identity operator $\longrightarrow$ identity matrix.}
+          The map sends $I$ (the identity \emph{operator}) to $I$ (the identity
+          \emph{matrix}). Without explicitly invoking $\M{I} = I$, one has not
+          actually closed the argument.
+\end{enumerate}
+ 
+The proof chains these two facts together: the operator equation $TT^{-1} = I$
+is lifted to the matrix equation $\M{T}\M{T^{-1}} = I$ by crossing both bridges
+simultaneously.
+\end{remark}
+ 
+\begin{note}
+Algebraically, the map $T \mapsto \mathcal{M}(T)$ (with respect to a fixed
+basis) is a \emph{ring isomorphism} from $\mathcal{L}(V)$ to $M_{n \times n}(F)$.
+Ring isomorphisms necessarily:
+\begin{itemize}
+    \item send the multiplicative identity to the multiplicative identity, and
+    \item send invertible elements to invertible elements, preserving inverses.
+\end{itemize}
+Theorem 3.86 is precisely the second of these properties. The ``obviousness''
+of the result is a reflection of how well-designed the correspondence between
+operators and matrices is --- but the formal proof still requires citing the
+machinery that establishes that correspondence.
+\end{note}
+ 
+\end{document}
