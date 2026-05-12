@@ -1,0 +1,92 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{hyperref}
+ 
+\geometry{margin=1in}
+ 
+\newtheorem*{theorem}{Theorem}
+\theoremstyle{remark}
+\newtheorem*{note}{Key Concept}
+ 
+\newcommand{\Lc}{\mathcal{L}}
+ 
+\title{\textbf{Axler Exercise 3D.1: The Inverse of an Inverse}\\
+\large A Proof and Conceptual Commentary}
+\author{Linear Algebra Done Right, 4th Edition}
+\date{}
+ 
+\begin{document}
+ 
+\maketitle
+ 
+\section*{Context in the Text}
+ 
+This is Exercise 1 in Section 3D (\emph{Invertibility and Isomorphisms}) of \emph{Linear Algebra Done Right}, 4th edition. Section 3D opens by
+defining invertibility and the inverse of a linear map (Definition 3.59),
+establishing that inverses are unique (Theorem 3.60), and introducing the
+notation $T^{-1}$ (3.61). This exercise is the first in the section and is
+intentionally elementary: it asks the reader to check that the defining
+equations of an inverse are symmetric in $T$ and $T^{-1}$, and to invoke
+uniqueness. It is less a proof than a careful reading of the definition.
+ 
+\section*{Prerequisites}
+ 
+\begin{itemize}
+    \item \textbf{Definition 3.59 (Invertible, inverse):} $T \in \Lc(V, W)$ is
+          invertible if there exists $S \in \Lc(W, V)$ such that $ST = I_V$ and
+          $TS = I_W$. Such an $S$ is called an inverse of $T$.
+ 
+    \item \textbf{Theorem 3.60 (Uniqueness of the inverse):} An invertible
+          linear map has a unique inverse, denoted $T^{-1}$.
+ 
+    \item \textbf{Notation 3.61:} If $T \in \Lc(V,W)$ is invertible, then
+          $T^{-1}$ is the unique element of $\Lc(W, V)$ satisfying
+          $T^{-1}T = I_V$ and $TT^{-1} = I_W$.
+\end{itemize}
+ 
+\section*{Statement}
+ 
+\begin{theorem}[Exercise 3D.1]
+Suppose $T \in \Lc(V, W)$ is invertible. Then $T^{-1}$ is invertible and
+\[
+    \left(T^{-1}\right)^{-1} = T.
+\]
+\end{theorem}
+ 
+\section*{Proof}
+ 
+Since $T$ is invertible, its inverse $T^{-1} \in \Lc(W, V)$ satisfies
+\[
+    T^{-1}T = I_V \qquad \text{and} \qquad TT^{-1} = I_W.
+\]
+These same two equations, read from the perspective of $T^{-1}$, say precisely
+that $T \in \Lc(V, W)$ is an inverse of $T^{-1} \in \Lc(W, V)$: a map in
+$\Lc(V, W)$ that composes with $T^{-1}$ on each side to give the appropriate
+identity. Therefore $T^{-1}$ is invertible.
+ 
+Since inverses are unique (Theorem 3.60), $T$ must be \emph{the} inverse of
+$T^{-1}$, i.e.,
+\[
+    \left(T^{-1}\right)^{-1} = T. \qquad \blacksquare
+\]
+ 
+\section*{Key Concept}
+ 
+\begin{note}
+The core observation is that Definition 3.59 is \emph{symmetric} in $T$ and
+$T^{-1}$. The two conditions
+\[
+    T^{-1}T = I_V \qquad \text{and} \qquad TT^{-1} = I_W
+\]
+make no distinction between which map is the ``original'' and which is the
+``inverse'' --- each is the inverse of the other. The only thing the proof needs
+to add beyond this symmetry observation is uniqueness (Theorem 3.60), to
+upgrade ``$T$ is \emph{an} inverse of $T^{-1}$'' to ``$T$ is \emph{the}
+inverse of $T^{-1}$,'' which is what the notation $(T^{-1})^{-1} = T$ asserts.
+ 
+This same symmetry argument recurs throughout algebra: in group theory, the
+inverse of $g^{-1}$ is $g$ for exactly the same reason.
+\end{note}
+ 
+\end{document}
