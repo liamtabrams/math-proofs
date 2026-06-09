@@ -1,0 +1,135 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{mdframed}
+\geometry{margin=1in}
+ 
+\title{Linear Regression: The Normal Equations\\
+\large Grad School Linear Algebra Prep Notes}
+\author{}
+\date{}
+ 
+\begin{document}
+\maketitle
+ 
+\noindent\textbf{Source:} Video 17 --- Linear Regression, $\approx$21:50
+ 
+\medskip
+ 
+\begin{mdframed}[linewidth=1pt, innertopmargin=10pt, innerbottommargin=10pt, innerrightmargin=10pt, innerleftmargin=10pt]
+\noindent\textbf{Original Prompt:}
+ 
+\medskip
+\noindent Relearning linear regression in the context of solving linear equations. The professor says: \textit{``This linear system has a nice solution, but I'm not gonna give you that solution. So in general this linear system has a unique solution, provided that $X$ (the matrix containing constant terms and data [features]) has some nice properties, but I'm not gonna write that solution. I encourage you to pause the video, go look for it, you'll see it in your linear regression class.''}
+ 
+\medskip
+\noindent The linear system he is talking about is
+\[
+2\mathbf{X}^T(\mathbf{y} - \mathbf{X}\boldsymbol{\beta}) = 0,
+\]
+which can be algebraically manipulated to
+\[
+2\mathbf{X}^T\mathbf{X}\boldsymbol{\beta} = 2\mathbf{X}^T\mathbf{y}.
+\]
+So does this mean the solution involves finding the inverse of $2\mathbf{X}^T\mathbf{X}$ and multiplying it on the left of $2\mathbf{X}^T\mathbf{y}$ to find $\boldsymbol{\beta}$ (the betas, aka the regression coefficients), provided the inverse exists (we can also ignore the 2 by dividing both sides by it)? Is that it? Are there more specifics, like finding the determinant of the $(\mathbf{X}^T\mathbf{X})$ matrix if we wanted an explicit formula for an $n \times n$ matrix?
+\end{mdframed}
+ 
+\bigskip
+\hrule
+\bigskip
+ 
+\section*{Yes: The Normal Equations (OLS Closed-Form Solution)}
+ 
+Dividing both sides by 2 and multiplying on the left by $(\mathbf{X}^T\mathbf{X})^{-1}$ yields the \textbf{Ordinary Least Squares (OLS)} estimator, known as the \textbf{Normal Equations}:
+ 
+\[
+\boxed{\boldsymbol{\beta} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}}
+\]
+ 
+\section*{1. The ``Nice Properties'' of Matrix $\mathbf{X}$}
+ 
+For $(\mathbf{X}^T\mathbf{X})^{-1}$ to exist, the matrix $\mathbf{X}^T\mathbf{X}$ must be \textbf{invertible (non-singular)}. This requires:
+ 
+\begin{itemize}
+  \item \textbf{Full Column Rank:} The columns of $\mathbf{X}$ (your features) must be linearly independent. No feature can be a perfect linear combination of other features (i.e., no \emph{perfect multicollinearity}).
+  \item \textbf{More data than features} ($m \geq n$): You must have more observations (rows) than parameters to estimate (columns). If you have fewer data points than features, the system is underdetermined and infinitely many solutions exist.
+\end{itemize}
+ 
+\section*{2. The Role of the Determinant}
+ 
+To write an explicit analytical formula for $\boldsymbol{\beta}$ without the abstract ${}^{-1}$ symbol, use the \textbf{determinant} and \textbf{adjugate matrix} via Cramer's Rule:
+ 
+\[
+(\mathbf{X}^T\mathbf{X})^{-1} = \frac{1}{\det(\mathbf{X}^T\mathbf{X})} \cdot \operatorname{adj}(\mathbf{X}^T\mathbf{X})
+\]
+ 
+Therefore, the condition ``the inverse exists'' is mathematically equivalent to:
+\[
+\det(\mathbf{X}^T\mathbf{X}) \neq 0
+\]
+ 
+\section*{3. Why Professors Don't Write Out the Explicit Determinant Formula}
+ 
+\begin{itemize}
+  \item \textbf{Notation Nightmare:} For anything larger than a $2\times 2$ or $3\times 3$ matrix, writing the explicit determinant formula (via permutations/Leibniz formula) takes pages of text and becomes unreadable.
+  \item \textbf{Computers Don't Use It:} In practice, algorithms never compute the determinant or explicit inverse $(\mathbf{X}^T\mathbf{X})^{-1}$ directly---it is computationally inefficient and prone to rounding errors. Instead, software solves the linear system
+  \[
+    \mathbf{X}^T\mathbf{X}\,\boldsymbol{\beta} = \mathbf{X}^T\mathbf{y}
+  \]
+  using matrix decompositions such as \textbf{QR Decomposition} or \textbf{Cholesky Decomposition}.
+\end{itemize}
+
+\section*{4. Direct Methods vs.\ Gradient Descent}
+ 
+All three methods below are algorithms for solving the same underlying problem --- finding the $\boldsymbol{\beta}$ that minimizes the RSS --- they simply take different computational routes to get there. The direct methods arrive at an exact answer, while gradient descent converges iteratively and is technically an approximation, though in practice close enough that it is the preferred trade-off at large scale.
+ 
+\subsection*{Direct Methods: QR and Cholesky Decomposition}
+ 
+QR Decomposition and Cholesky Decomposition are \textbf{direct methods} --- they solve the normal equations
+\[
+\mathbf{X}^T\mathbf{X}\,\boldsymbol{\beta} = \mathbf{X}^T\mathbf{y}
+\]
+exactly in a finite number of steps by factoring the matrix into simpler pieces that are numerically easy to work with. There is no iteration and no approximation --- just structured algebra that arrives at the same closed-form answer as $(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$, but computed in a more stable way than explicitly inverting the matrix.
+ 
+\subsection*{Gradient Descent: An Iterative Alternative}
+ 
+\textbf{Gradient descent} is a fundamentally different algorithm. Rather than solving the normal equations, it starts with an initial guess for $\boldsymbol{\beta}$ and repeatedly updates it by stepping in the direction that most reduces the loss (the RSS), scaled by a \emph{learning rate} $\alpha$:
+\[
+\boldsymbol{\beta} \leftarrow \boldsymbol{\beta} - \alpha \cdot \nabla_{\boldsymbol{\beta}}\,\text{RSS}(\boldsymbol{\beta})
+\]
+This process iterates until the updates become negligibly small, at which point $\boldsymbol{\beta}$ has \emph{converged} to (approximately) the same solution the normal equations give exactly.
+ 
+\subsection*{Why Gradient Descent Dominates in Deep Learning}
+ 
+The normal equations require forming and operating on $\mathbf{X}^T\mathbf{X}$, an $n \times n$ matrix where $n$ is the number of features. When $n$ is large --- as in neural networks with millions of parameters --- this becomes computationally prohibitive. Gradient descent sidesteps forming this matrix entirely, updating parameters one step at a time using only the gradient. This scales far more efficiently to large models, which is why gradient descent (and variants like SGD and Adam) is the backbone of modern deep learning.
+ 
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Method} & \textbf{Type} & \textbf{Best For} \\
+\midrule
+Normal Equations (explicit inverse) & Direct / Closed-form & Small problems, illustration \\
+QR / Cholesky Decomposition & Direct / Closed-form & Small-to-medium scale, numerically stable \\
+Gradient Descent & Iterative & Large scale, deep learning \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\section*{Derivation Summary: From RSS to the Normal Equations}
+ 
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Step} & \textbf{Result} \\
+\midrule
+Minimize RSS, set gradient $= 0$ & $2\mathbf{X}^T(\mathbf{y} - \mathbf{X}\boldsymbol{\beta}) = 0$ \\
+Rearrange & $\mathbf{X}^T\mathbf{X}\boldsymbol{\beta} = \mathbf{X}^T\mathbf{y}$ \\
+Multiply left by $(\mathbf{X}^T\mathbf{X})^{-1}$ & $\boldsymbol{\beta} = (\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T\mathbf{y}$ \\
+Existence condition & $\det(\mathbf{X}^T\mathbf{X}) \neq 0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+ 
+\end{document}
