@@ -1,0 +1,161 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem*{result}{Key Result}
+\newtheorem*{remark}{Remark}
+
+\title{OLS Estimator via Singular Value Decomposition}
+\date{}
+
+\begin{document}
+\maketitle
+
+\noindent\textit{This solution originated as a multiple choice problem from Linear Algebra
+preparatory work for the MS in Data Science \& AI program at USF, beginning summer 2026. What began as selecting the correct answer evolved
+into a more rigorous proof and learning exercise, with careful attention to the
+underlying linear algebraic properties and common points of confusion that
+a terse multiple choice format does not surface.}
+
+
+\section*{Problem}
+
+Given the OLS regression model $Y = X\beta + \epsilon$, where $X \in \mathbb{R}^{n \times p}$
+with $n > p$, $\beta \in \mathbb{R}^{p \times 1}$, and $\epsilon$ is mean-zero noise,
+the OLS estimator is
+\[
+    \hat{\beta} = (X^T X)^{-1} X^T Y.
+\]
+Express $\hat{\beta}$ in terms of the SVD of $X$, where $X = UDV^T$.
+
+\section*{Background}
+
+\begin{result}[Orthonormal Vectors]
+A set of vectors $\{v_1, \ldots, v_k\}$ is \textbf{orthonormal} if
+\[
+    v_i^T v_j = \begin{cases} 1 & i = j \\ 0 & i \neq j \end{cases}.
+\]
+That is, every vector has unit length, and distinct vectors are mutually perpendicular.
+The inner product $v_i^T v_j$ measures the projection of $v_i$ onto $v_j$; orthonormality
+says each vector has no component in any other direction in the set. This is the
+natural generalization of the standard basis vectors $e_1, \ldots, e_k$.
+\end{result}
+
+\begin{result}[Orthonormal Matrix --- Square Case]
+A square matrix $M \in \mathbb{R}^{k \times k}$ is \textbf{orthonormal} (orthogonal) if
+its columns form an orthonormal set. Writing out the column inner products in matrix form,
+this is equivalent to
+\[
+    M^TM = MM^T = I_k.
+\]
+This has a powerful consequence for inverses: comparing with the definition $MM^{-1} = I_k$,
+we immediately read off that $M^{-1} = M^T$. In other words, for an orthonormal square
+matrix, the inverse is free to compute --- it is simply the transpose. A further
+consequence used below is that $(M^T)^{-1} = (M^{-1})^T = (M^T)^T = M$, i.e.\ the
+inverse of the transpose is the original matrix.
+\end{result}
+
+\begin{result}[Orthonormal Matrix --- Tall Case]
+For a tall matrix $M \in \mathbb{R}^{n \times p}$ with $n > p$ and orthonormal columns,
+the column orthonormality condition gives only the weaker one-sided identity
+\[
+    M^T M = I_p.
+\]
+The product $MM^T$ is $n \times n$ but has rank at most $p < n$, so $MM^T = I_n$ is
+impossible --- $I_n$ is full rank $n$, while $MM^T$ can never be. Geometrically, $M$
+maps $\mathbb{R}^p$ into a $p$-dimensional subspace of $\mathbb{R}^n$, so $MM^T$
+acts as the identity only on that subspace, not on all of $\mathbb{R}^n$. The one-sided
+identity $M^TM = I_p$ is nonetheless sufficient for our purposes: it allows us to
+cancel $M^TM$ to $I_p$ whenever this product appears, which is the key cancellation
+exploited in Steps 1 and 3 below.
+\end{result}
+
+\begin{result}[Diagonal Matrices and Their Inverses]
+A diagonal matrix $D = \operatorname{diag}(\delta_1, \ldots, \delta_p)$ with all positive diagonal
+entries is invertible, with
+\[
+    D^{-1} = \operatorname{diag}(\delta_1^{-1}, \ldots, \delta_p^{-1}).
+\]
+This follows directly from the definition: $DD^{-1} = \operatorname{diag}(\delta_1 \cdot
+\delta_1^{-1}, \ldots) = I_p$. A useful consequence is that for any integer power $k$,
+$D^k = \operatorname{diag}(\delta_1^k, \ldots, \delta_p^k)$, so in particular
+$(D^2)^{-1} = D^{-2}$ and $(D^{-2})D = D^{-1}$, mirroring the familiar rules of
+scalar exponents. Note also that diagonal matrices are symmetric ($D^T = D$) and
+commute with one another.
+\end{result}
+
+\begin{result}[Inverse of a Product]
+For square invertible matrices $A, B$:
+\[
+    (AB)^{-1} = B^{-1}A^{-1}.
+\]
+This reversal of order is necessary: $AB$ first applies $B$ then $A$, so to undo it
+one must first undo $A$ (apply $A^{-1}$) and then undo $B$ (apply $B^{-1}$). The rule
+extends to three factors as $(ABC)^{-1} = C^{-1}B^{-1}A^{-1}$, which is applied in
+Step 2 below. Crucially, this rule requires all matrices involved to be \emph{square}
+and invertible --- it cannot be applied to $X$ directly since $X$ is not square.
+\end{result}
+
+\section*{SVD Components}
+
+In the thin SVD $X = UDV^T$:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{n \times p}$ has orthonormal columns, so $U^T U = I_p$
+          (tall case above).
+    \item $D \in \mathbb{R}^{p \times p}$ is diagonal with positive singular values
+          $\delta_1, \ldots, \delta_p$, hence invertible and $D^T = D$.
+    \item $V \in \mathbb{R}^{p \times p}$ is square and orthonormal:
+          $V^TV = VV^T = I_p$, so $V^{-1} = V^T$ and $(V^T)^{-1} = V$.
+\end{itemize}
+
+\section*{Derivation}
+
+\subsection*{Step 1: Compute $X^TX$ using the SVD}
+
+Substituting $X = UDV^T$ and using $D^T = D$ (diagonal matrices are symmetric):
+\[
+    X^T X = (UDV^T)^T(UDV^T) = VD^T U^T \cdot UDV^T = VD \underbrace{(U^TU)}_{=\, I_p} DV^T = VD^2V^T.
+\]
+The cancellation $U^TU = I_p$ is the tall-case orthonormality of $U$: the columns of $U$
+are orthonormal, so their pairwise inner products collapse to the identity.
+
+\begin{remark}
+A natural first instinct is to attempt to simplify $(X^TX)^{-1}X^T$ by writing
+$(X^TX)^{-1} = X^{-1}(X^T)^{-1}$, and then cancelling $(X^T)^{-1}$ against $X^T$ to
+obtain $X^{-1}$. However, this reasoning is invalid because $X^{-1}$ does not exist for
+a non-square matrix. The inverse of a matrix $A$ is defined as the matrix $B$ satisfying
+$BA = AB = I$ with the same identity matrix on both sides. For a tall matrix
+$X \in \mathbb{R}^{n \times p}$ with $n > p$, this is impossible: $XB$ is $n \times n$
+and has rank at most $p < n$, so $XB = I_n$ can never hold for any matrix $B$. The
+resolution is precisely Step 1 above: rather than inverting $X$ directly, we first form
+$X^TX$, which \emph{is} square ($p \times p$) and invertible, and only then apply the
+inverse-of-a-product rule legitimately.
+\end{remark}
+
+\subsection*{Step 2: Invert $X^TX$}
+
+Since $V$ is square orthonormal and $D^2$ is diagonal with positive entries, all three
+factors in $VD^2V^T$ are square and invertible. Applying the inverse-of-a-product rule
+to three factors and using $V^{-1} = V^T$ and $(V^T)^{-1} = V$:
+\[
+    (X^TX)^{-1} = (VD^2V^T)^{-1} = (V^T)^{-1}(D^2)^{-1}V^{-1} = V D^{-2} V^T.
+\]
+
+\subsection*{Step 3: Compute $(X^TX)^{-1}X^T$}
+
+Substituting $X^T = (UDV^T)^T = VDU^T$ and applying the result of Step 2:
+\[
+    (X^TX)^{-1}X^T = VD^{-2}V^T \cdot VDU^T
+    = VD^{-2}\underbrace{(V^TV)}_{=\,I_p}DU^T = VD^{-2}DU^T = VD^{-1}U^T,
+\]
+where $V^TV = I_p$ is square-case orthonormality of $V$, and $D^{-2}D = D^{-1}$ follows
+from the diagonal exponent rule.
+
+\subsection*{Step 4: Conclude}
+
+\[
+    \boxed{\hat{\beta} = (X^TX)^{-1}X^TY = VD^{-1}U^TY.}
+\]
+
+\end{document}
