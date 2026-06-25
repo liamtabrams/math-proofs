@@ -66,10 +66,12 @@ The product $MM^T$ is $n \times n$ but has rank at most $p < n$, so $MM^T = I_n$
 impossible --- $I_n$ has full rank $n$, while $MM^T$ can never be. Geometrically,
 $MM^T$ acts as a map from $\mathbb{R}^n$ to $\mathbb{R}^n$, but its image is only the
 $p$-dimensional column space of $M$ --- a proper subspace of $\mathbb{R}^n$. Any vector
-orthogonal to that subspace is sent to zero, so $MM^T$ cannot act as the identity on
-all of $\mathbb{R}^n$. The one-sided identity $M^TM = I_p$ is nonetheless sufficient
-for our purposes: it allows us to cancel $M^TM$ to $I_p$ whenever this product appears,
-which is the key cancellation exploited in Steps 1 and 3 below.
+$v$ orthogonal to the column space of $M$ satisfies $M^Tv = 0$ by definition of
+orthogonality, and therefore $MM^Tv = M(M^Tv) = M \cdot 0 = 0$, so $MM^T$ sends all
+such vectors to zero and cannot act as the identity on all of $\mathbb{R}^n$. The
+one-sided identity $M^TM = I_p$ is nonetheless sufficient for our purposes: it allows
+us to cancel $M^TM$ to $I_p$ whenever this product appears, which is the key
+cancellation exploited in Steps 1 and 3 below.
 \end{result}
 
 \begin{result}[Diagonal Matrices and Their Inverses]
