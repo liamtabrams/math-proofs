@@ -1,0 +1,283 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{geometry}
+\usepackage{parskip}
+\usepackage{hyperref}
+\usepackage{natbib}
+ 
+\geometry{margin=1.2in}
+ 
+\title{\textbf{A Heuristic Physical Derivation of the Normal Distribution}\\[0.5em]
+\large Following the Herschel--Maxwell Approach}
+\author{}
+\date{}
+ 
+\begin{document}
+ 
+\maketitle
+ 
+\begin{center}
+\small\textit{These notes reproduce and streamline the derivation presented in the video \\ 
+``The Physics of Gaussian Distributions (Herschel--Maxwell Theorem)'' by Math with Ming.\\
+\url{https://www.youtube.com/watch?v=dM-xpwnaMlk&t=1533s}}
+\end{center}
+ 
+\bigskip
+ 
+\bigskip
+ 
+\section*{Setup and Assumptions}
+ 
+Let $f$ be the continuously differentiable p.d.f.\ for the random variables $X$ and $Y$, which are i.i.d.
+ 
+Since they are i.i.d.\ RVs, the joint pdf distribution satisfies
+\[
+    f_{X,Y}(x, y) = f(x)\, f(y).
+\]
+ 
+Also, since the density depends on $X$ and $Y$ via the distance of $(x, y)$ to the origin ($f_{X,Y}$ is a radial function $f_{X,Y}(r)$ where $r = \sqrt{x^2 + y^2}$), we know that
+\[
+    f_{X,Y}(x, y) = f(x)\,f(y) = g(x^2 + y^2) \quad \text{for some function } g.
+\]
+ 
+\section*{Deriving the Functional Equation}
+ 
+Letting $x = 0$ and $y = 0$ to rewrite the above equation in 2 different ways, we see that
+\[
+    f(x)\,f(0) = g(x^2) \qquad \text{and} \qquad f(0)\,f(y) = g(y^2).
+\]
+ 
+Therefore,
+\[
+    \frac{g(x^2)}{f(0)} \cdot \frac{g(y^2)}{f(0)} = g(x^2 + y^2).
+\]
+ 
+Since $g(0) = f(0)\,f(0)$, we can rewrite the above as
+\[
+    \frac{g(x^2)}{g(0)}\cdot g(y^2) = g(x^2 + y^2),
+\]
+and thus
+\[
+    \frac{g(x^2)}{g(0)} \cdot \frac{g(y^2)}{g(0)} = \frac{g(x^2 + y^2)}{g(0)}.
+\]
+ 
+Now let $h(t) = \dfrac{g(t)}{g(0)}$, so that we can work with a normalized version of $g$ satisfying $h(0) = 1$; think of it as measuring the density at radius $\sqrt{t}$ relative to the density at the origin. With this substitution we obtain
+\[
+    h(x^2)\,h(y^2) = h(x^2 + y^2).
+\]
+ 
+\section*{Solving the Functional Equation}
+ 
+Letting $x^2 = 0$ and $y^2 = 0$, we see that
+\[
+    h(0)\,h(0) = h(0),
+\]
+which implies that $h(0) = 0$ or $h(0) = 1$. If $h(0) = 0$, then for all $x^2 \geq 0$, letting $y^2 = 0$, this means that
+\[
+    h(x^2 + y^2) = h(x^2) = h(x^2)\,h(0) = 0 \implies h(x^2) = 0,
+\]
+which is not the solution we want; instead we assume $h(0) = 1$.
+ 
+Letting $s = x^2$ and $t = y^2$ where $s, t \geq 0$, we get a \textbf{Cauchy Functional Equation}:
+\[
+    h(s)\,h(t) = h(s + t).
+\]
+ 
+Since we assumed $f$ is smooth, we can show that $h$ is also smooth. Recall that
+\[
+    h(t) = \frac{g(t)}{g(0)} = \frac{g(y^2)}{g(0)} = \frac{g(y^2)}{f(0)\,f(0)} = \frac{f(y)\,f(0)}{f(0)\,f(0)} = \frac{f(y)}{f(0)},
+\]
+so $h$ inherits the smoothness of $f$. We can therefore differentiate the functional equation. Writing the derivative of $h$ at $t$ as a limit:
+\[
+    h'(t) = \lim_{s \to 0^+} \frac{h(t + s) - h(t)}{s}.
+\]
+This is a one-sided limit because we defined $s = x^2$ where $x$ is a real number, so $s \geq 0$. Substituting $h(t + s) = h(t)\,h(s)$:
+\[
+    h'(t) = \lim_{s \to 0^+} \frac{h(t)\,h(s) - h(t)}{s} = h(t) \lim_{s \to 0^+} \frac{h(s) - 1}{s} = h(t)\,h'(0).
+\]
+The last equality uses $h(0) = 1$ to recognize the limit as the definition of $h'(0)$.
+ 
+Thus $h'(t) = h(t)\,h'(0)$.
+ 
+Now define $h'(0) = c$ to be some constant in $\mathbb{R}$, so that $h$ satisfies the simple differential equation
+\[
+    h' = c\,h,
+\]
+which has the solution $h(t) = h(0)\,e^{ct}$, and thus
+\[
+    h(t) = e^{ct}.
+\]
+ 
+\section*{Recovering $f(x)$}
+ 
+Since $h(t) = \dfrac{g(t)}{g(0)}$ and $f(x) = \dfrac{g(x^2)}{f(0)}$,
+\[
+    f(x) = \frac{g(x^2)}{f(0)} = \frac{g(0)\,h(x^2)}{f(0)} = f(0)\,e^{cx^2},
+\]
+again because $g(0) = f(0)\,f(0)$.
+ 
+Since $f(x)$ is a probability density function,
+\[
+    \int_{-\infty}^{\infty} f(x)\,dx = 1,
+\]
+so we can conclude that $c$ is strictly negative, otherwise this cannot be true.
+ 
+Before connecting $c$ to some physical/geometric/statistical parameter, let us first determine the value of $f(0)$, which we will rename to $A$, to make
+\[
+    \int_{-\infty}^{\infty} f(x)\,dx = 1 = \int_{-\infty}^{\infty} A\,e^{cx^2}\,dx.
+\]
+ 
+It is well known that the antiderivative of $e^{-kr^2}$ or $e^{cx^2}$ cannot be written in closed form in terms of elementary functions the way we can for the antiderivative of $e^{-kr}$ or $e^{cx}$. This is actually proven by Liouville's Theorem in differential algebra, which roughly states that certain functions are too ``transcendental'' to have elementary antiderivatives, which includes this one.
+ 
+\section*{Normalization via the Double Integral Trick}
+ 
+To find $A$, we compute the integral $\int_{-\infty}^{\infty} Ae^{cx^2}\,dx$ indirectly by 
+squaring it and converting to polar coordinates. Since the integrand of the joint density 
+factors as $f(x)\,f(y)$, Fubini's theorem allows the double integral to separate into a 
+product of two independent single integrals:
+\[
+    \iint_{\mathbb{R}^2} f(x)\,f(y)\,dx\,dy 
+    = \int_{-\infty}^{\infty} f(x)\,dx \int_{-\infty}^{\infty} f(y)\,dy 
+    = \left(\int_{-\infty}^{\infty} Ae^{cx^2}\,dx\right)^2.
+\]
+Since the joint density must integrate to $1$ over $\mathbb{R}^2$, this squared integral 
+equals $1$, and polar coordinates are a natural fit since $e^{c(x^2+y^2)}$ depends only 
+on $r^2 = x^2 + y^2$.
+ 
+\begin{align*}
+1 &= \iint_{\mathbb{R}^2} f_{X,Y}(x,y)\,dx\,dy
+   = \iint_{\mathbb{R}^2} A^2\, e^{c(x^2+y^2)}\,dx\,dy \\
+  &= A^2 \int_0^{2\pi}\int_0^{\infty} e^{cr^2}\,r\,dr\,d\theta
+   = 2\pi A^2 \int_0^{\infty} e^{cr^2}\,r\,dr.
+\end{align*}
+ 
+Letting $u = r^2$ (so $du = 2r\,dr$, i.e.\ $r\,dr = \tfrac{du}{2}$):
+\[
+    = 2\pi A^2 \int_0^{\infty} e^{cu}\,\frac{du}{2}
+    = \pi A^2 \int_0^{\infty} e^{cu}\,du
+    = \pi A^2 \cdot \frac{1}{c}\Bigl[e^{cu}\Bigr]_0^{\infty}
+    = \pi A^2 \cdot \frac{1}{c}(0 - 1)
+    = -\frac{\pi A^2}{c}.
+\]
+ 
+Thus
+\[
+    -\frac{\pi A^2}{c} = 1
+    \implies A^2 = -\frac{c}{\pi}
+    \implies \boxed{A = \sqrt{-\frac{c}{\pi}}},
+\]
+which again enforces that $c$ is strictly negative.
+ 
+\section*{Connecting $c$ to the Variance}
+ 
+Now we want to connect the constant $c$ to some physical/geometric/statistical parameter to give it more meaning. More specifically, $c$ is going to be related to the variance and standard deviation, which are measures of spread of the random variables $X$ and $Y$. In the case of the dartboard thought experiment, think of this as the \emph{thrower's precision} (not accuracy, as the rotational symmetry around the bullseye requires an assumption of perfect accuracy). The precision is tied to the spread of the data, and accuracy is tied to any systematic bias in the throwing, which we assume is $0$.
+ 
+We can determine the relationship between $c$ and $\sigma$ either by computing the variance integral for the 1D distribution (using integration by parts) or by computing the integral in 2D with the joint distribution (using basic $u$-substitution). We show both methods below.
+ 
+\subsection*{Method 1: 1D Integration by Parts}
+ 
+We start with the equation
+\[
+    \int_{-\infty}^{\infty} x^2 f(x)\,dx = \sigma^2,
+\]
+where $\sigma^2$ is the variance of either RV $X$ or $Y$ (since they are identically distributed).
+ 
+From the product rule for differentiation, we know that
+\[
+    \frac{d}{dx}(uv) = \frac{du}{dx}\,v + \frac{dv}{dx}\,u,
+\]
+and from this we get the integration by parts formula (multiplying through by $dx$):
+\[
+    u\,dv = d(uv) - v\,du \implies \int_a^b u\,dv = uv\Big|_a^b - \int_a^b v\,du.
+\]
+ 
+For
+\[
+    \int_{-\infty}^{\infty} x^2 f(x)\,dx
+    = \int_{-\infty}^{\infty} x^2 A e^{cx^2}\,dx
+    = A\int_{-\infty}^{\infty} x^2 e^{cx^2}\,dx = \sigma^2,
+\]
+we want to let $u = x$ and $dv = x e^{cx^2}\,dx$, which yields
+\[
+    v = \frac{e^{cx^2}}{2c} \qquad \text{and} \qquad du = dx.
+\]
+ 
+Via integration by parts,
+\[
+    A\int_{-\infty}^{\infty} x^2 e^{cx^2}\,dx
+    = A\!\left(\frac{x\,e^{cx^2}}{2c}\Big|_{-\infty}^{\infty} - \int_{-\infty}^{\infty} \frac{e^{cx^2}}{2c}\,dx\right).
+\]
+ 
+Since $c < 0$ and we know that exponentials decay faster than $x$ grows, the terms corresponding to $uv(\infty)$ and $uv(-\infty)$ equal $0$.
+ 
+We are left with
+\[
+    \sigma^2 = -A\int_{-\infty}^{\infty} \frac{e^{cx^2}}{2c}\,dx = -\frac{A}{2c}\int_{-\infty}^{\infty} e^{cx^2}\,dx.
+\]
+ 
+Since
+\[
+    \int_{-\infty}^{\infty} A\,e^{cx^2}\,dx = 1 \implies \int_{-\infty}^{\infty} e^{cx^2}\,dx = \frac{1}{A},
+\]
+we get
+\[
+    \sigma^2 = -\frac{A}{2c} \cdot \frac{1}{A} = -\frac{1}{2c}.
+\]
+ 
+Thus
+\[
+    \boxed{c = -\frac{1}{2\sigma^2}}.
+\]
+ 
+\subsection*{Method 2: 2D Joint Distribution via $u$-Substitution}
+ 
+Alternatively, we can compute the second moment using the joint distribution over $\mathbb{R}^2$. By symmetry, $\text{Var}(X) = \text{Var}(Y) = \sigma^2$, and therefore
+\[
+    \iint_{\mathbb{R}^2} (x^2 + y^2)\, f_{X,Y}(x,y)\,dx\,dy = 2\sigma^2.
+\]
+Converting to polar coordinates with $x^2 + y^2 = r^2$ and $dx\,dy = r\,dr\,d\theta$:
+\[
+    \iint_{\mathbb{R}^2} r^2 \cdot A^2 e^{cr^2}\, r\,dr\,d\theta
+    = 2\pi A^2 \int_0^{\infty} r^3 e^{cr^2}\,dr = 2\sigma^2.
+\]
+Now let $u = r^2$, so $du = 2r\,dr$, i.e.\ $r^3\,dr = \tfrac{u}{2}\,du$:
+\[
+    2\pi A^2 \int_0^{\infty} \frac{u}{2}\,e^{cu}\,du = \pi A^2 \int_0^{\infty} u\,e^{cu}\,du.
+\]
+Integrating by parts with $p = u$, $dq = e^{cu}\,du$:
+\[
+    \int_0^{\infty} u\, e^{cu}\,du = \left[\frac{u\,e^{cu}}{c}\right]_0^{\infty} - \int_0^{\infty} \frac{e^{cu}}{c}\,du = 0 - \frac{1}{c}\cdot\frac{1}{c}\Bigl[e^{cu}\Bigr]_0^{\infty} = -\frac{1}{c^2}(0-1) = \frac{1}{c^2}.
+\]
+Therefore:
+\[
+    \pi A^2 \cdot \frac{1}{c^2} = 2\sigma^2.
+\]
+We already know $A^2 = -c/\pi$, so substituting:
+\[
+    \pi \cdot \frac{-c}{\pi} \cdot \frac{1}{c^2} = -\frac{1}{c} = 2\sigma^2,
+\]
+which again gives
+\[
+    \boxed{c = -\frac{1}{2\sigma^2}}.
+\]
+ 
+\medskip
+So the bigger the spread or variance in the RV $X$/$Y$, the smaller the absolute value of $c$, which causes the PDF for $X$/$Y$ to decay more slowly. This should make physical sense.
+ 
+\section*{The Final Result}
+ 
+We end up seeing that the PDFs for $X$ and $Y$ are
+\[
+    f(x) = \sqrt{-\frac{c}{\pi}}\,e^{cx^2} = \frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-x^2/2\sigma^2}
+\]
+and
+\[
+    f(y) = \frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-y^2/2\sigma^2}
+\]
+respectively, and that the joint distribution is
+\[
+    f_{X,Y}(x,y) = \frac{1}{2\pi\sigma^2}\,e^{-(x^2+y^2)/2\sigma^2},
+\]
+which is indeed dependent on $r^2 = x^2 + y^2$ --- the radius as a single variable --- and is rotationally invariant for any rotation of axes $T(x,y)$.
+ 
+\end{document}
